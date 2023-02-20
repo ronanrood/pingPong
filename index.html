@@ -20,6 +20,8 @@
         canvasCtx = canvasEl.getContext("2d"),
         gapX = 10
 
+      const mouse = { x: 0, y: 0 }
+
       const field = {
         w: window.innerWidth,
         h: window.innerHeight,
@@ -40,12 +42,17 @@
 
       const leftPaddle = {
         x: gapX,
-        y: 100,
+        y: 0,
         w: line.w,
         h: 200,
+        _move: function () {
+          this.y = mouse.y - this.h / 2
+        },
         draw: function () {
           canvasCtx.fillStyle = "#ffffff"
           canvasCtx.fillRect(this.x, this.y, this.w, this.h)
+
+          this._move()
         },
       }
 
@@ -78,9 +85,9 @@
         y: 120,
         r: 20,
         speed: 5,
-        _move: function(){
+        _move: function () {
           this.x += 1 * this.speed
-          this.y +=1 * this.speed
+          this.y += 1 * this.speed
         },
         draw: function () {
           canvasCtx.fillStyle = "#ffffff"
@@ -109,8 +116,8 @@
         ball.draw()
       }
 
-      window.animateFrame = (function(){
-        return(
+      window.animateFrame = (function () {
+        return (
           window.requestAnimationFrame ||
           window.webkitRequestAnimationFrame ||
           window.mozRequestAnimationFrame ||
@@ -129,6 +136,11 @@
 
       setup()
       main()
+
+      canvasEl.addEventListener("mousemove", function (e) {
+        mouse.x = e.pageX
+        mouse.y = e.pageY
+      })
     </script>
   </body>
 </html>
